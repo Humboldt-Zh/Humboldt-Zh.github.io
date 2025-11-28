@@ -1,0 +1,32 @@
+{
+  "siteConfig": {
+    "name": "张宏博",
+    "title": "AI产品经理 / 开发者",
+    "bio": "专注 AI 落地与产品架构...",
+    "avatar": "你的头像链接"
+  },
+  "posts": [
+    {
+      "id": 1,
+      "title": "我的第一篇文章",
+      "date": "2025-11-29",
+      "category": "随笔",
+      "type": "thought",
+      "summary": "这是摘要...",
+      "cover": "图片链接",
+      "content": "<p>这是正文内容</p>"
+    }
+  ],
+  "agents": [
+     {
+        "id": 1,
+        "name": "示例智能体",
+        "desc": "描述",
+        "tags": ["AI"],
+        "url": "链接"
+     }
+  ],
+  "photos": [
+    { "id": 1, "src": "图片链接", "title": "标题" }
+  ]
+}
