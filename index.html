@@ -3,424 +3,755 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的个人空间 | Creator Space</title>
-    <!-- 引入 Tailwind CSS 用于快速布局 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>开发者个人空间 | Tech & Art</title>
     
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel (for JSX) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
     <style>
-        /* 全局设置 */
+        /* 全局样式设置 */
         body {
             font-family: 'Noto Sans SC', sans-serif;
-            background-color: #0f172a; /* 深蓝黑色底 */
-            color: #ffffff;
             margin: 0;
+            padding: 0;
             overflow-x: hidden;
+            background-color: #f8fafc; /* 兜底色 */
         }
 
-        /* --------------------------------------
-           1. 粒子背景 Canvas 样式
-           -------------------------------------- */
+        /* 隐藏滚动条但保留滚动功能 (Chrome/Safari) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(100, 116, 139, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 116, 139, 0.4);
+        }
+
+        /* 亚克力/毛玻璃效果工具类 */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* 动态背景 Canvas 层级 */
         #particle-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* 置于底层 */
-            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
+            z-index: -1;
+            /* Antigravity 风格：纯净背景，微弱的径向光晕 */
+            background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f1f5f9 100%);
         }
 
-        /* --------------------------------------
-           2. 玻璃拟态卡片 (Glassmorphism)
-           -------------------------------------- */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        /* 文字渐变鎏金效果 */
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #2563EB 0%, #4F46E5 100%); /* 改为更加 Google Blue 的色调 */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .text-gradient-cyan {
+            background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* --------------------------------------
-           3. 液态/凸起按钮特效 (Liquid/Convex Button)
-           -------------------------------------- */
-        .liquid-btn {
+        /* 动画关键帧 */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .hover-float:hover {
+            animation: float 2s ease-in-out infinite;
+        }
+
+        /* 按钮光感动效 */
+        .btn-glow {
             position: relative;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            outline: none;
-            color: white;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            border-radius: 9999px; /* 胶囊形状 */
-            box-shadow: 
-                -5px -5px 15px rgba(255,255,255, 0.1), 
-                5px 5px 15px rgba(0,0,0, 0.5),
-                inset 0px 0px 0px rgba(255,255,255,0);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             overflow: hidden;
+            transition: all 0.3s ease;
         }
-
-        /* 按钮内的高光层，增加玻璃感 */
-        .liquid-btn::before {
+        .btn-glow::after {
             content: '';
             position: absolute;
-            top: 10%;
-            left: 15%;
-            width: 70%;
-            height: 40%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
-            border-radius: 9999px;
-            opacity: 0.5;
-            filter: blur(4px);
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            transition: 0.5s;
         }
-
-        /* 悬停时的凸起/液态效果 */
-        .liquid-btn:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 
-                -2px -2px 10px rgba(255,255,255, 0.2), 
-                2px 2px 10px rgba(0,0,0, 0.4),
-                inset -2px -2px 10px rgba(0,0,0, 0.2),
-                inset 2px 2px 10px rgba(255,255,255, 0.2);
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+        .btn-glow:hover::after {
+            left: 100%;
         }
-
-        /* 点击时的按压效果 */
-        .liquid-btn:active {
-            transform: translateY(1px) scale(0.98);
-            box-shadow: 
-                inset 4px 4px 8px rgba(0,0,0, 0.5),
-                inset -4px -4px 8px rgba(255,255,255, 0.1);
+        
+        /* 瀑布流布局 */
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 1.5rem;
         }
-
-        /* 文章卡片悬停特效 */
-        .article-card {
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-        .article-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* 滚动条美化 */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0f172a; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #475569; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #64748b; 
+        @media (min-width: 640px) { .masonry-grid { column-count: 2; } }
+        @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
+        @media (min-width: 1280px) { .masonry-grid { column-count: 4; } }
+        
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
         }
     </style>
 </head>
 <body>
-
-    <!-- 背景 Canvas -->
+    <div id="root"></div>
     <canvas id="particle-canvas"></canvas>
 
-    <!-- 导航栏 -->
-    <nav class="fixed top-0 w-full z-50 glass-panel border-b-0 border-white/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-2xl font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 cursor-default">
-                        Dev.Log
-                    </span>
+    <script type="text/babel">
+        // --- 修复部分：内联定义图标组件 (解决 CDN 加载错误) ---
+        const Icons = {
+            BookOpen: (props) => (
+                <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            ),
+            Box: (props) => (
+                <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            ),
+            Image: (props) => (
+                <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            ),
+            ArrowRight: (props) => (
+                <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            ),
+            X: (props) => (
+                <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            ),
+            Calendar: (props) => (
+                <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            ),
+            Tag: (props) => (
+                <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            ),
+            ExternalLink: (props) => (
+                <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            )
+        };
+
+        // --- 内容配置区域 (由此处开始修改，非技术人员可轻松维护) ---
+        
+        // 1. 网站基础信息
+        const SITE_CONFIG = {
+            name: "LUMOS",
+            title: "开发者 / 创作者 / 思考者",
+            bio: "在代码与像素之间寻找平衡。热爱构建现代Web应用，同时也痴迷于捕捉光影的瞬间。",
+            avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
+        };
+
+        // 2. 文章数据 (自动按分类显示颜色)
+        // type: "frontend" (蓝紫), "devops" (青绿), "design" (橙红), "thought" (灰/黑)
+        const BLOG_POSTS = [
+            {
+                id: 1,
+                title: "构建下一代微前端架构的思考",
+                date: "2023-10-24",
+                category: "前端开发",
+                type: "frontend",
+                summary: "在复杂的企业级应用中，如何利用 Module Federation 实现真正的解耦？本文探讨了状态共享与沙箱隔离的最佳实践。",
+                cover: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                content: `
+                    <h2>微前端的现状</h2>
+                    <p>随着Web应用日益复杂，巨石应用（Monolith）的维护成本呈指数级增长。微前端架构应运而生...</p>
+                    <h3>核心挑战</h3>
+                    <p>样式隔离、JS沙箱、以及公共依赖的管理是实施微前端时面临的三座大山。我们采用了...</p>
+                    <blockquote>技术服务于业务，架构的选择永远是权衡的结果。</blockquote>
+                    <p>（此处为长文内容的模拟，实际部署可支持Markdown渲染或富文本）</p>
+                `
+            },
+            {
+                id: 2,
+                title: "Kubernetes 自动化运维实战笔记",
+                date: "2023-10-15",
+                category: "运维部署",
+                type: "devops",
+                summary: "从零搭建高可用的K8s集群，并实现基于GitOps的持续交付流程。包含遇到的坑与解决方案。",
+                cover: "https://images.unsplash.com/photo-1667372393119-c81c0e8f1a8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                content: "<p>K8s已成为云原生时代的操作系统...</p>"
+            },
+            {
+                id: 3,
+                title: "设计系统中的色彩语义学",
+                date: "2023-09-28",
+                category: "UI/UX设计",
+                type: "design",
+                summary: "颜色不仅仅是装饰。如何建立一套具有语义、可访问性且易于扩展的色彩系统？",
+                cover: "https://images.unsplash.com/photo-1502691876148-a84978e59af8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                content: "<p>色彩是设计语言中最感性的部分...</p>"
+            },
+            {
+                id: 4,
+                title: "Rust vs Go：系统编程的选择",
+                date: "2023-11-02",
+                category: "后端技术",
+                type: "backend",
+                summary: "在高性能服务端的选型上，Rust的内存安全与Go的高并发模型各有所长。深度对比分析。",
+                cover: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                content: "<p>系统级编程语言正在经历复兴...</p>"
+            },
+             {
+                id: 5,
+                title: "数字游民生活指南：工具篇",
+                date: "2023-08-10",
+                category: "随笔",
+                type: "thought",
+                summary: "高效远程工作的必备硬件与软件清单，以及如何保持工作与生活的边界。",
+                cover: "https://images.unsplash.com/photo-1593642532744-d377ab507dc8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                content: "<p>自由不代表散漫，自律才是自由的前提...</p>"
+            }
+        ];
+
+        // 3. 智能体数据
+        const AGENTS = [
+            {
+                id: 1,
+                name: "CodeRefactor AI",
+                desc: "一键优化遗留代码，自动添加注释并转换为现代ES6+语法。",
+                tags: ["Python", "NLP", "Code"],
+                // 演示用iframe，实际可替换为你的Agent服务地址
+                url: "https://en.wikipedia.org/wiki/Artificial_intelligence_art" 
+            },
+            {
+                id: 2,
+                name: "DailyBrief Bot",
+                desc: "自动聚合HackerNews与Github Trending，生成中文简报。",
+                tags: ["RAG", "Automation"],
+                url: "https://en.wikipedia.org/wiki/Generative_artificial_intelligence"
+            },
+            {
+                id: 3,
+                name: "Immersive Translator",
+                desc: "上下文感知的沉浸式翻译助手，支持多语种实时对照。",
+                tags: ["React", "API"],
+                url: "https://en.wikipedia.org/wiki/Machine_translation"
+            }
+        ];
+
+        // 4. 摄影画廊数据
+        const PHOTOS = [
+            { id: 1, src: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", title: "晨雾山林" },
+            { id: 2, src: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", title: "阿尔卑斯倒影" },
+            { id: 3, src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", title: "海角余晖" },
+            { id: 4, src: "https://images.unsplash.com/photo-1519681393798-3828fb4090bb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", title: "城市霓虹" },
+            { id: 5, src: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", title: "孤旅" },
+            { id: 6, src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", title: "静谧湖泊" },
+            { id: 7, src: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", title: "森林光影" },
+             { id: 8, src: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", title: "田野" },
+        ];
+
+        // --- React 组件逻辑 ---
+
+        const { useState, useEffect, useRef } = React;
+        // 使用内联定义的图标组件
+        const { BookOpen, Box, Image: ImageIcon, ArrowRight, X, Calendar, Tag, ExternalLink } = Icons;
+
+        // 1. 粒子背景组件 (独立于 React 渲染，性能更好)
+        const ParticleSystem = () => {
+            useEffect(() => {
+                const canvas = document.getElementById('particle-canvas');
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                let particles = [];
+                let animationFrameId;
+
+                const resize = () => {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                };
+
+                // 鼠标交互
+                let mouse = { x: null, y: null };
+                
+                const handleMouseMove = (e) => {
+                    mouse.x = e.clientX;
+                    mouse.y = e.clientY;
+                };
+                
+                const handleMouseLeave = () => {
+                    mouse.x = null;
+                    mouse.y = null;
+                };
+
+                window.addEventListener('mousemove', handleMouseMove);
+                window.addEventListener('mouseleave', handleMouseLeave);
+
+                // Antigravity 风格：科技蓝 + 深邃蓝 + 少量高光
+                const colors = ['#2563EB', '#3B82F6', '#60A5FA', '#93C5FD', '#1E40AF'];
+
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        
+                        // Antigravity 物理：极慢的漂浮速度
+                        this.vx = (Math.random() - 0.5) * 0.2; 
+                        this.vy = (Math.random() - 0.5) * 0.2;
+                        
+                        // 形状多样化：方形、圆形
+                        this.shape = Math.random() > 0.7 ? 'rect' : 'circle';
+                        
+                        // 尺寸：部分粒子很小（星尘），部分稍大（碎片）
+                        this.size = Math.random() * 3 + 1; 
+                        
+                        // 旋转属性 (仅对方形有效)
+                        this.angle = Math.random() * 360;
+                        this.angleSpeed = (Math.random() - 0.5) * 0.02;
+
+                        this.color = colors[Math.floor(Math.random() * colors.length)];
+                        
+                        // 呼吸效果初始值
+                        this.alpha = Math.random() * 0.6 + 0.1;
+                        this.alphaSpeed = (Math.random() - 0.5) * 0.01;
+                    }
+
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        
+                        // 旋转更新
+                        this.angle += this.angleSpeed;
+
+                        // 呼吸效果更新
+                        this.alpha += this.alphaSpeed;
+                        if (this.alpha <= 0.1 || this.alpha >= 0.7) {
+                            this.alphaSpeed *= -1; // 反转呼吸方向
+                        }
+
+                        // 无缝边界 (Antigravity 空间是连续的)
+                        if (this.x < -50) this.x = width + 50;
+                        if (this.x > width + 50) this.x = -50;
+                        if (this.y < -50) this.y = height + 50;
+                        if (this.y > height + 50) this.y = -50;
+
+                        // 鼠标流体交互
+                        if (mouse.x != null) {
+                            let dx = mouse.x - this.x;
+                            let dy = mouse.y - this.y;
+                            let distance = Math.sqrt(dx * dx + dy * dy);
+                            
+                            const influenceRadius = 250;
+                            
+                            if (distance < influenceRadius) {
+                                // 模拟流体扰动：鼠标移动会带动周围粒子微弱旋转和偏移
+                                const force = (influenceRadius - distance) / influenceRadius;
+                                
+                                // 斥力与引力的混合，形成一种"拨动"感
+                                const angle = Math.atan2(dy, dx);
+                                const pushX = Math.cos(angle) * force * 1.5;
+                                const pushY = Math.sin(angle) * force * 1.5;
+                                
+                                this.x -= pushX;
+                                this.y -= pushY;
+                            }
+                        }
+                    }
+
+                    draw() {
+                        ctx.save();
+                        ctx.globalAlpha = this.alpha;
+                        ctx.fillStyle = this.color;
+                        ctx.translate(this.x, this.y);
+                        
+                        if (this.shape === 'rect') {
+                            ctx.rotate(this.angle);
+                            // 绘制微小方形碎片
+                            ctx.fillRect(-this.size, -this.size, this.size * 2, this.size * 2);
+                        } else {
+                            // 绘制圆形星尘
+                            ctx.beginPath();
+                            ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                        
+                        ctx.restore();
+                    }
+                }
+
+                const init = () => {
+                    resize();
+                    particles = [];
+                    // 增加粒子密度以模拟星空感
+                    const particleCount = (width * height) / 5000;
+                    for (let i = 0; i < particleCount; i++) {
+                        particles.push(new Particle());
+                    }
+                }
+
+                const animate = () => {
+                    ctx.clearRect(0, 0, width, height);
+                    
+                    particles.forEach(p => {
+                        p.update();
+                        p.draw();
+                    });
+                    
+                    animationFrameId = requestAnimationFrame(animate);
+                }
+
+                init();
+                animate();
+                
+                window.addEventListener('resize', () => {
+                    resize();
+                    init();
+                });
+
+                return () => {
+                    window.removeEventListener('mousemove', handleMouseMove);
+                    window.removeEventListener('mouseleave', handleMouseLeave);
+                    cancelAnimationFrame(animationFrameId);
+                }
+            }, []);
+
+            return null;
+        };
+
+        // 2. 导航栏
+        const Navbar = ({ activeTab, setActiveTab }) => {
+            const tabs = [
+                { id: 'blog', icon: BookOpen, label: '技术博客' },
+                { id: 'agents', icon: Box, label: '智能体' },
+                { id: 'gallery', icon: ImageIcon, label: '摄影' },
+            ];
+
+            return (
+                <nav className="glass-nav sticky top-0 z-50 px-6 py-4 flex justify-between items-center transition-all">
+                    <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('blog')}>
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                            L
+                        </div>
+                        <span className="font-bold text-xl tracking-tight text-slate-800">{SITE_CONFIG.name}</span>
+                    </div>
+
+                    <div className="flex gap-1 md:gap-4 bg-white/40 p-1 rounded-full border border-white/50 backdrop-blur-sm">
+                        {tabs.map((tab) => (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`
+                                    flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
+                                    ${activeTab === tab.id 
+                                        ? 'bg-white text-slate-900 shadow-sm scale-105' 
+                                        : 'text-slate-500 hover:text-slate-800 hover:bg-white/50'}
+                                `}
+                            >
+                                <tab.icon size={16} />
+                                <span className="hidden md:inline">{tab.label}</span>
+                            </button>
+                        ))}
+                    </div>
+                </nav>
+            );
+        };
+
+        // 3. 博客卡片组件
+        const BlogCard = ({ post, onClick }) => {
+            // 根据类型定义颜色风格
+            const typeStyles = {
+                frontend: "from-blue-100 to-indigo-100 text-blue-600",
+                devops: "from-emerald-100 to-teal-100 text-teal-600",
+                design: "from-orange-100 to-rose-100 text-rose-600",
+                backend: "from-slate-200 to-zinc-200 text-slate-700",
+                thought: "from-gray-100 to-slate-100 text-slate-600"
+            };
+
+            const style = typeStyles[post.type] || typeStyles.thought;
+
+            return (
+                <div 
+                    onClick={() => onClick(post)}
+                    className="glass-panel rounded-2xl overflow-hidden cursor-pointer group hover:transform hover:-translate-y-2 transition-all duration-500 hover:shadow-xl hover:border-blue-200/50 flex flex-col h-full"
+                >
+                    {/* 渐变头图区域 */}
+                    <div className="relative h-48 overflow-hidden">
+                        <div className={`absolute inset-0 bg-gradient-to-br ${style} opacity-80 z-10 mix-blend-multiply`}></div>
+                        <img 
+                            src={post.cover} 
+                            alt={post.title} 
+                            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0"
+                        />
+                        <div className="absolute top-4 left-4 z-20">
+                             <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold shadow-sm flex items-center gap-1 text-slate-700">
+                                <Tag size={10} />
+                                {post.category}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="p-6 flex flex-col flex-grow">
+                        <div className="flex items-center gap-2 text-slate-400 text-xs mb-3 font-mono">
+                            <Calendar size={12} />
+                            {post.date}
+                        </div>
+                        <h3 className="text-xl font-bold text-slate-800 mb-3 group-hover:text-blue-600 transition-colors leading-tight">
+                            {post.title}
+                        </h3>
+                        <p className="text-slate-500 text-sm leading-relaxed mb-6 flex-grow line-clamp-3">
+                            {post.summary}
+                        </p>
+                        
+                        <div className="flex items-center text-blue-600 font-medium text-sm group-hover:translate-x-2 transition-transform duration-300">
+                            阅读全文 <ArrowRight size={16} className="ml-1" />
+                        </div>
+                    </div>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#home" class="hover:text-blue-300 transition-colors px-3 py-2 rounded-md text-sm font-medium">首页</a>
-                        <a href="#articles" class="hover:text-blue-300 transition-colors px-3 py-2 rounded-md text-sm font-medium">文章列表</a>
-                        <a href="#about" class="hover:text-blue-300 transition-colors px-3 py-2 rounded-md text-sm font-medium">关于我</a>
-                        <a href="https://github.com" target="_blank" class="liquid-btn px-6 py-2 text-sm font-bold flex items-center gap-2">
-                            <span>GitHub</span>
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            );
+        };
+
+        // 4. 文章阅读器模态框
+        const ArticleReader = ({ post, onClose }) => {
+            if (!post) return null;
+
+            return (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8">
+                    <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onClick={onClose}></div>
+                    <div className="glass-panel w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden relative flex flex-col animate-[float_0.5s_ease-out]">
+                        
+                        {/* 头部 */}
+                        <div className="relative h-64 sm:h-80 flex-shrink-0">
+                            <img src={post.cover} className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                            <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-white/20 hover:bg-white/40 rounded-full text-white backdrop-blur-md transition-all">
+                                <X size={24} />
+                            </button>
+                            <div className="absolute bottom-0 left-0 p-8 text-white w-full">
+                                <span className="inline-block px-3 py-1 rounded-full bg-blue-500/80 backdrop-blur text-xs mb-4">
+                                    {post.category}
+                                </span>
+                                <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-shadow-lg">{post.title}</h1>
+                                <p className="opacity-80 text-sm font-mono">{post.date}</p>
+                            </div>
+                        </div>
+
+                        {/* 内容区 */}
+                        <div className="overflow-y-auto p-8 sm:p-12 bg-white/80 backdrop-blur-xl">
+                            <div 
+                                className="prose prose-slate prose-lg max-w-none prose-headings:font-bold prose-headings:text-slate-800 prose-p:text-slate-600 prose-img:rounded-xl"
+                                dangerouslySetInnerHTML={{ __html: post.content }}
+                            />
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // 5. 智能体卡片组件
+        const AgentCard = ({ agent }) => {
+            return (
+                <div className="glass-panel rounded-2xl overflow-hidden flex flex-col h-[500px] transition-all hover:shadow-xl hover:border-blue-300/50">
+                    <div className="p-4 border-b border-white/50 bg-white/40 flex justify-between items-center">
+                        <div>
+                            <h3 className="font-bold text-slate-800 flex items-center gap-2">
+                                {agent.name}
+                                <span className="bg-green-100 text-green-600 text-[10px] px-2 py-0.5 rounded-full border border-green-200">Online</span>
+                            </h3>
+                            <p className="text-xs text-slate-500 mt-0.5">{agent.desc}</p>
+                        </div>
+                        <a href={agent.url} target="_blank" className="p-2 hover:bg-white/50 rounded-lg text-slate-400 hover:text-blue-500 transition-colors">
+                            <ExternalLink size={18} />
                         </a>
                     </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- 头部 Hero 区域 -->
-    <header id="home" class="relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden">
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center z-10">
-            <!-- 头像框 (带液态光晕) -->
-            <div class="relative w-32 h-32 mb-8 group">
-                <div class="absolute inset-0 bg-blue-500 rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity duration-500 animate-pulse"></div>
-                <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=Felix" alt="Avatar" class="relative w-32 h-32 rounded-full border-4 border-white/20 shadow-2xl z-10 bg-slate-800">
-            </div>
-            
-            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-6 drop-shadow-lg">
-                你好，我是 <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">CoderX</span>
-            </h1>
-            <p class="mt-4 text-xl text-gray-300 max-w-2xl mx-auto font-light leading-relaxed">
-                热衷于探索代码的艺术，这里记录我的技术思考与生活灵感。<br>
-                欢迎来到我的数字花园。
-            </p>
-            
-            <div class="mt-10 flex gap-6 justify-center">
-                <button class="liquid-btn px-8 py-4 text-lg font-semibold" onclick="document.getElementById('articles').scrollIntoView({behavior: 'smooth'})">
-                    阅读文章
-                </button>
-                <button class="px-8 py-4 rounded-full border border-white/20 hover:bg-white/10 transition-colors text-lg font-medium backdrop-blur-sm" onclick="alert('请配置你的联系方式链接！')">
-                    联系我
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- 文章列表区域 -->
-    <main id="articles" class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 z-10">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl relative inline-block">
-                最新文章
-                <!-- 标题下划线装饰 -->
-                <span class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent"></span>
-            </h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <!-- 文章卡片 1 -->
-            <article class="glass-panel article-card rounded-2xl overflow-hidden flex flex-col">
-                <div class="h-48 bg-gradient-to-br from-indigo-900 to-purple-900 flex items-center justify-center relative group-hover:brightness-110 transition-all">
-                    <!-- 装饰图标 -->
-                    <svg class="w-16 h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                </div>
-                <div class="p-6 flex-1 flex flex-col">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="px-3 py-1 text-xs rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">前端开发</span>
-                        <span class="text-gray-400 text-xs">2023-11-20</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3">深入理解 React 并发模式</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
-                        并发模式是 React 18 中最令人兴奋的特性之一。本文将带你深入了解它的工作原理以及如何利用 `useTransition` 优化用户体验。
-                    </p>
-                    <a href="#" class="liquid-btn text-center py-2 text-sm font-medium w-full mt-auto">
-                        阅读全文
-                    </a>
-                </div>
-            </article>
-
-            <!-- 文章卡片 2 -->
-            <article class="glass-panel article-card rounded-2xl overflow-hidden flex flex-col">
-                <div class="h-48 bg-gradient-to-br from-slate-800 to-gray-800 flex items-center justify-center relative">
-                    <svg class="w-16 h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
-                </div>
-                <div class="p-6 flex-1 flex flex-col">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="px-3 py-1 text-xs rounded-full bg-green-500/20 text-green-300 border border-green-500/30">运维部署</span>
-                        <span class="text-gray-400 text-xs">2023-10-15</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3">使用 Docker 容器化你的应用</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
-                        从零开始编写 Dockerfile，构建镜像，并使用 Docker Compose 编排多容器服务。让部署变得简单而优雅。
-                    </p>
-                    <a href="#" class="liquid-btn text-center py-2 text-sm font-medium w-full mt-auto">
-                        阅读全文
-                    </a>
-                </div>
-            </article>
-
-            <!-- 文章卡片 3 -->
-            <article class="glass-panel article-card rounded-2xl overflow-hidden flex flex-col">
-                <div class="h-48 bg-gradient-to-br from-pink-900 to-rose-900 flex items-center justify-center relative">
-                    <svg class="w-16 h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
-                </div>
-                <div class="p-6 flex-1 flex flex-col">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="px-3 py-1 text-xs rounded-full bg-pink-500/20 text-pink-300 border border-pink-500/30">UI 设计</span>
-                        <span class="text-gray-400 text-xs">2023-09-02</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3">色彩心理学在 Web 设计中的应用</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
-                        颜色不仅仅是装饰。了解不同的色彩如何影响用户的情绪和决策，提升你的网页转化率。
-                    </p>
-                    <a href="#" class="liquid-btn text-center py-2 text-sm font-medium w-full mt-auto">
-                        阅读全文
-                    </a>
-                </div>
-            </article>
-
-        </div>
-        
-        <div class="mt-16 text-center">
-            <a href="#" class="inline-flex items-center text-gray-400 hover:text-white transition-colors">
-                查看更多历史文章 
-                <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-            </a>
-        </div>
-    </main>
-
-    <!-- 页脚 -->
-    <footer class="glass-panel border-t border-white/10 mt-20">
-        <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
-            <p class="mt-8 text-center text-base text-gray-400">
-                &copy; 2024 CoderX. All rights reserved. Built with HTML, Canvas & Glassmorphism.
-            </p>
-        </div>
-    </footer>
-
-    <!-- 粒子特效脚本 -->
-    <script>
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let width, height;
-        let particles = [];
-        
-        // 配置参数
-        const properties = {
-            bgColor: 'rgba(17, 17, 19, 1)',
-            particleColor: 'rgba(255, 255, 255, 1)',
-            particleRadius: 3,
-            particleCount: 60,
-            particleVelocity: 0.5,
-            lineLength: 150,
-            particleLife: 6
-        };
-
-        // 鼠标交互位置
-        let mouse = {
-            x: null,
-            y: null,
-            radius: 150 // 鼠标影响半径
-        };
-
-        // 监听鼠标移动
-        window.addEventListener('mousemove', (event) => {
-            mouse.x = event.x;
-            mouse.y = event.y;
-        });
-        
-        // 鼠标移出窗口时重置
-        window.addEventListener('mouseout', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.velocityX = (Math.random() - 0.5) * properties.particleVelocity;
-                this.velocityY = (Math.random() - 0.5) * properties.particleVelocity;
-                this.size = Math.random() * 2 + 1; // 随机大小
-                this.opacity = Math.random() * 0.5 + 0.2; // 随机透明度
-            }
-
-            position() {
-                // 移动粒子
-                this.x += this.velocityX;
-                this.y += this.velocityY;
-
-                // 边界反弹
-                if (this.x > width || this.x < 0) this.velocityX *= -1;
-                if (this.y > height || this.y < 0) this.velocityY *= -1;
-
-                // 鼠标交互 (排斥/吸引效果)
-                if (mouse.x != null) {
-                    let dx = mouse.x - this.x;
-                    let dy = mouse.y - this.y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < mouse.radius) {
-                        const forceDirectionX = dx / distance;
-                        const forceDirectionY = dy / distance;
-                        const force = (mouse.radius - distance) / mouse.radius;
-                        const directionX = forceDirectionX * force * 3; // 3是力度
-                        const directionY = forceDirectionY * force * 3;
-
-                        // 这里选择是吸引还是排斥，目前设置为稍微被鼠标吸引，制造流动感
-                        // 改为 -= 就是排斥
-                        this.x += directionX; 
-                        this.y += directionY;
-                    }
-                }
-            }
-
-            reDraw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.fill();
-            }
-        }
-
-        function reDrawBackground() {
-            ctx.clearRect(0, 0, width, height);
-        }
-
-        function drawLines() {
-            let x1, y1, x2, y2, length, opacity;
-            for (let i in particles) {
-                for (let j in particles) {
-                    x1 = particles[i].x;
-                    y1 = particles[i].y;
-                    x2 = particles[j].x;
-                    y2 = particles[j].y;
-                    length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
                     
-                    if (length < properties.lineLength) {
-                        opacity = 1 - length / properties.lineLength;
-                        ctx.lineWidth = '0.5';
-                        ctx.strokeStyle = `rgba(173, 216, 230, ${opacity * 0.5})`; // 浅蓝色连线
-                        ctx.beginPath();
-                        ctx.moveTo(x1, y1);
-                        ctx.lineTo(x2, y2);
-                        ctx.stroke();
-                    }
+                    {/* 嵌入区域 - 模拟智能体界面 */}
+                    <div className="flex-grow bg-slate-50 relative">
+                        {/* 使用 iframe 嵌入外部工具，为了演示安全性使用了 wiki 或 静态页。实际使用可替换为 Gradio/Streamlit 地址 */}
+                        <iframe 
+                            src={agent.url} 
+                            className="w-full h-full border-0 opacity-90 hover:opacity-100 transition-opacity"
+                            title={agent.name}
+                            loading="lazy"
+                        ></iframe>
+                        
+                        {/* 遮罩提示 (可选，为了防止 iframe 捕获鼠标滚动) */}
+                        <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-slate-100 to-transparent pointer-events-none"></div>
+                    </div>
+
+                    <div className="p-3 bg-white/60 backdrop-blur-md flex gap-2 flex-wrap text-xs border-t border-white/50">
+                        {agent.tags.map(tag => (
+                            <span key={tag} className="px-2 py-1 bg-slate-100 text-slate-500 rounded-md border border-slate-200">
+                                #{tag}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        // 6. 摄影 Lightbox
+        const Lightbox = ({ photo, onClose }) => {
+            if (!photo) return null;
+
+            return (
+                <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-[fadeIn_0.3s_ease-out]" onClick={onClose}>
+                    <button className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors">
+                        <X size={32} />
+                    </button>
+                    <img 
+                        src={photo.src} 
+                        alt={photo.title} 
+                        className="max-w-full max-h-[90vh] object-contain shadow-2xl rounded-sm"
+                        onClick={(e) => e.stopPropagation()} // 防止点击图片关闭
+                    />
+                    <div className="absolute bottom-6 left-0 w-full text-center text-white/80 font-light tracking-widest text-lg">
+                        {photo.title}
+                    </div>
+                </div>
+            );
+        };
+
+        // --- 主 App 组件 ---
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('blog');
+            const [selectedArticle, setSelectedArticle] = useState(null);
+            const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+            // 渲染内容区域
+            const renderContent = () => {
+                switch (activeTab) {
+                    case 'blog':
+                        return (
+                            <div className="animate-[fadeIn_0.5s_ease-out]">
+                                {/* 头部介绍 */}
+                                <header className="text-center py-16 sm:py-24 max-w-2xl mx-auto px-4">
+                                    <div className="mb-6 relative inline-block">
+                                        <div className="absolute inset-0 bg-blue-400 blur-xl opacity-20 rounded-full"></div>
+                                        <img src={SITE_CONFIG.avatar} alt="Avatar" className="w-24 h-24 rounded-full border-4 border-white shadow-xl relative z-10" />
+                                    </div>
+                                    <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 tracking-tight">
+                                        Hello, I'm <span className="text-gradient-gold">{SITE_CONFIG.name}</span>
+                                    </h1>
+                                    <p className="text-lg text-slate-500 leading-relaxed font-light">
+                                        {SITE_CONFIG.bio}
+                                    </p>
+                                    
+                                    {/* 社交链接模拟 */}
+                                    <div className="flex justify-center gap-4 mt-8">
+                                        {['Github', 'Twitter', 'Email'].map(item => (
+                                            <button key={item} className="btn-glow px-6 py-2 rounded-full glass-panel text-sm font-medium text-slate-600 hover:text-blue-600 hover:border-blue-200">
+                                                {item}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </header>
+
+                                {/* 文章网格 */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-20">
+                                    {BLOG_POSTS.map(post => (
+                                        <BlogCard key={post.id} post={post} onClick={setSelectedArticle} />
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    
+                    case 'agents':
+                        return (
+                            <div className="animate-[fadeIn_0.5s_ease-out] py-12">
+                                <div className="mb-10 text-center">
+                                    <h2 className="text-3xl font-bold text-slate-800 mb-2">我的数字分身</h2>
+                                    <p className="text-slate-500">Embedded Intelligence & Tools</p>
+                                </div>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    {AGENTS.map(agent => (
+                                        <AgentCard key={agent.id} agent={agent} />
+                                    ))}
+                                </div>
+                            </div>
+                        );
+
+                    case 'gallery':
+                        return (
+                            <div className="animate-[fadeIn_0.5s_ease-out] py-12">
+                                <div className="mb-10 text-center">
+                                    <h2 className="text-3xl font-bold text-slate-800 mb-2">光影收集册</h2>
+                                    <p className="text-slate-500">Freeze the moment</p>
+                                </div>
+                                <div className="masonry-grid">
+                                    {PHOTOS.map(photo => (
+                                        <div 
+                                            key={photo.id} 
+                                            className="masonry-item relative group rounded-xl overflow-hidden cursor-zoom-in"
+                                            onClick={() => setSelectedPhoto(photo)}
+                                        >
+                                            <img 
+                                                src={photo.src} 
+                                                alt={photo.title} 
+                                                loading="lazy"
+                                                className="w-full h-auto rounded-xl transition-transform duration-700 group-hover:scale-105"
+                                            />
+                                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                                            <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                <span className="text-white text-sm font-medium">{photo.title}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    default:
+                        return null;
                 }
-            }
-        }
+            };
 
-        function reDrawParticles() {
-            for (let i in particles) {
-                particles[i].position();
-                particles[i].reDraw();
-            }
-        }
+            return (
+                <div className="min-h-screen font-sans text-slate-800 selection:bg-blue-200 selection:text-blue-900">
+                    <ParticleSystem />
+                    
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                        <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
+                        
+                        <main className="mt-6">
+                            {renderContent()}
+                        </main>
+                        
+                        {/* 页脚 */}
+                        <footer className="py-8 text-center text-slate-400 text-sm border-t border-slate-200/50 mt-12">
+                            <p>© {new Date().getFullYear()} {SITE_CONFIG.name}. Built with React & Tailwind.</p>
+                        </footer>
+                    </div>
 
-        function loop() {
-            reDrawBackground();
-            reDrawParticles();
-            drawLines();
-            requestAnimationFrame(loop);
-        }
+                    {/* 模态框 */}
+                    <ArticleReader post={selectedArticle} onClose={() => setSelectedArticle(null)} />
+                    <Lightbox photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />
+                </div>
+            );
+        };
 
-        function init() {
-            resize();
-            for (let i = 0; i < properties.particleCount; i++) {
-                particles.push(new Particle());
-            }
-            loop();
-        }
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-
-        window.addEventListener('resize', () => {
-            resize();
-            particles = []; // 窗口大变动时重置粒子，防止溢出
-            for (let i = 0; i < properties.particleCount; i++) {
-                particles.push(new Particle());
-            }
-        });
-
-        init();
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
