@@ -7,18 +7,14 @@
   },
   "blogPosts": [
     {
-      
-    
-  "id": 6,
-  "title": "百镜大战启幕：AI眼镜如何改写人机交互新范式？",
-  "date": "2025-03-15",
-  "category": "前沿科技",
-  "type": "thought",
-  "summary": "2024年全球AI眼镜销量暴涨533%，Meta、阿里、谷歌等巨头竞逐下一代终端入口。从“尝鲜”到“规模化”，本文深度解析“百镜大战”背后的技术迭代与生态变革。",
-  "cover": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-  "content": "<h2>下一代终端入口争夺战</h2><p>当智能手机的市场格局趋于稳定，一场关于下一代智能终端入口的争夺战已悄然打响。AI眼镜正凭借大模型技术的赋能和硬件的快速迭代，成为阿里、Meta、Google等科技巨头争相布局的核心赛道。从2023年的小众尝鲜到2025年的规模化增长，这场“百镜大战”正在重塑人与数字世界的交互方式。</p><h2>市场的爆发式增长</h2><p><strong>数据不会说谎：</strong>Wellsenn XR的数据显示，2023年全球AI眼镜销量仅24万副，而2024年飙升至152万副，同比增幅高达 <strong>533%</strong>。2025年上半年出货量已达406.5万台。这一增速证明AI眼镜已从尝鲜级产品迈向规模化普及的临界点。</p><h2>先行者的突破与局限</h2><p>Meta与Ray-Ban联合推出的第二代智能眼镜实现了“无感化交互”的突破，但早期产品的痛点依然明显：</p><ul><li><strong>佩戴舒适度：</strong>重心靠前，对亚洲人低鼻梁不友好，且容易导致眩晕。</li><li><strong>续航焦虑：</strong>初代Ray-Ban Meta单次满电仅能使用4小时。</li><li><strong>功能限制：</strong>单次视频录制时长短，发热严重。</li></ul><h2>后来者居上：技术破局</h2><p>阿里发布的<strong>夸克AI眼镜</strong>通过精准的技术创新实现了弯道超车：</p><ul><li><strong>极致轻薄：</strong>7.5毫米窄镜腿、3.3毫米薄镜框，比行业主流薄25%，实现全天候佩戴。</li><li><strong>解决续航：</strong>首创“可换电”设计（类似AirPods拆卸），配合眼镜盒充电，彻底解决电量焦虑。</li><li><strong>生态壁垒：</strong>接入高德地图（近眼导航）、支付宝（视线支付）及淘宝（实时比价），让眼镜成为“随身超级助理”。</li></ul><h2>未来展望：从屏幕时代到眼镜时代</h2><p>随着Google重启眼镜项目、苹果加速研发，这场竞争正从单一硬件比拼转向场景生态整合。正如阿里巴巴集团副总裁吴嘉所言，AI眼镜让智能助手真正连接物理世界。当AI眼镜彻底解决重量、续航、显示等核心痛点，成为全天候、无感化的“感官中枢”，我们将正式迎来人机交互的“眼镜时代”。</p>"
-
-      
+      "id": 6,
+      "title": "百镜大战启幕：AI眼镜如何改写人机交互新范式？",
+      "date": "2025-03-15",
+      "category": "前沿科技",
+      "type": "thought",
+      "summary": "2024年全球AI眼镜销量暴涨533%，Meta、阿里、谷歌等巨头竞逐下一代终端入口。从“尝鲜”到“规模化”，本文深度解析“百镜大战”背后的技术迭代与生态变革。",
+      "cover": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "content": "<h2>下一代终端入口争夺战</h2><p>当智能手机的市场格局趋于稳定，一场关于下一代智能终端入口的争夺战已悄然打响。AI眼镜正凭借大模型技术的赋能和硬件的快速迭代，成为阿里、Meta、Google等科技巨头争相布局的核心赛道。从2023年的小众尝鲜到2025年的规模化增长，这场“百镜大战”正在重塑人与数字世界的交互方式。</p><h2>市场的爆发式增长</h2><p><strong>数据不会说谎：</strong>Wellsenn XR的数据显示，2023年全球AI眼镜销量仅24万副，而2024年飙升至152万副，同比增幅高达 <strong>533%</strong>。2025年上半年出货量已达406.5万台。这一增速证明AI眼镜已从尝鲜级产品迈向规模化普及的临界点。</p><h2>先行者的突破与局限</h2><p>Meta与Ray-Ban联合推出的第二代智能眼镜实现了“无感化交互”的突破，但早期产品的痛点依然明显：</p><ul><li><strong>佩戴舒适度：</strong>重心靠前，对亚洲人低鼻梁不友好，且容易导致眩晕。</li><li><strong>续航焦虑：</strong>初代Ray-Ban Meta单次满电仅能使用4小时。</li><li><strong>功能限制：</strong>单次视频录制时长短，发热严重。</li></ul><h2>后来者居上：技术破局</h2><p>阿里发布的<strong>夸克AI眼镜</strong>通过精准的技术创新实现了弯道超车：</p><ul><li><strong>极致轻薄：</strong>7.5毫米窄镜腿、3.3毫米薄镜框，比行业主流薄25%，实现全天候佩戴。</li><li><strong>解决续航：</strong>首创“可换电”设计（类似AirPods拆卸），配合眼镜盒充电，彻底解决电量焦虑。</li><li><strong>生态壁垒：</strong>接入高德地图（近眼导航）、支付宝（视线支付）及淘宝（实时比价），让眼镜成为“随身超级助理”。</li></ul><h2>未来展望：从屏幕时代到眼镜时代</h2><p>随着Google重启眼镜项目、苹果加速研发，这场竞争正从单一硬件比拼转向场景生态整合。正如阿里巴巴集团副总裁吴嘉所言，AI眼镜让智能助手真正连接物理世界。当AI眼镜彻底解决重量、续航、显示等核心痛点，成为全天候、无感化的“感官中枢”，我们将正式迎来人机交互的“眼镜时代”。</p>"
     },
     {
       "id": 2,
@@ -66,28 +62,54 @@
       "id": 1,
       "name": "CodeRefactor AI",
       "desc": "一键优化遗留代码，自动添加注释并转换为现代ES6+语法。",
-      "tags": ["Python", "NLP", "Code"],
+      "tags": [
+        "Python",
+        "NLP",
+        "Code"
+      ],
       "url": "https://en.wikipedia.org/wiki/Artificial_intelligence_art"
     },
     {
       "id": 2,
       "name": "DailyBrief Bot",
       "desc": "自动聚合HackerNews与Github Trending，生成中文简报。",
-      "tags": ["RAG", "Automation"],
+      "tags": [
+        "RAG",
+        "Automation"
+      ],
       "url": "https://en.wikipedia.org/wiki/Generative_artificial_intelligence"
     },
     {
       "id": 3,
       "name": "Immersive Translator",
       "desc": "上下文感知的沉浸式翻译助手，支持多语种实时对照。",
-      "tags": ["React", "API"],
+      "tags": [
+        "React",
+        "API"
+      ],
       "url": "https://en.wikipedia.org/wiki/Machine_translation"
     }
   ],
   "photos": [
-    { "id": 1, "src": "images/63e2ac8db81b139f85d2dff1c51b84f1.jpg", "title": "天坛连月" },
-    { "id": 2, "src": "images/1c49534cb905d88fd88a7f25ba5ad48b.jpg", "title": "神女峰缅次姆" },
-    { "id": 3, "src": "images/1c49534cb905d88fd88a7f25ba5ad48b.jpg", "title": "梅里日照金山" },
-    { "id": 4, "src": "images/e22e320a6814ed6c2c7aa6a5ee13be98.jpg", "title": "勒多曼因" },
+    {
+      "id": 1,
+      "src": "images/63e2ac8db81b139f85d2dff1c51b84f1.jpg",
+      "title": "天坛连月"
+    },
+    {
+      "id": 2,
+      "src": "images/1c49534cb905d88fd88a7f25ba5ad48b.jpg",
+      "title": "神女峰缅次姆"
+    },
+    {
+      "id": 3,
+      "src": "images/1c49534cb905d88fd88a7f25ba5ad48b.jpg",
+      "title": "梅里日照金山"
+    },
+    {
+      "id": 4,
+      "src": "images/e22e320a6814ed6c2c7aa6a5ee13be98.jpg",
+      "title": "勒多曼因"
+    }
   ]
 }
