@@ -1,32 +1,93 @@
 {
   "siteConfig": {
-    "name": "张宏博",
-    "title": "AI产品经理 / 开发者",
-    "bio": "专注 AI 落地与产品架构...",
-    "avatar": "你的头像链接"
+    "name": "LUMOS",
+    "title": "开发者 / 创作者 / 思考者",
+    "bio": "在代码与像素之间寻找平衡。热爱构建现代Web应用，同时也痴迷于捕捉光影的瞬间。",
+    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
   },
-  "posts": [
+  "blogPosts": [
     {
       "id": 1,
-      "title": "我的第一篇文章",
-      "date": "2025-11-29",
+      "title": "构建下一代微前端架构的思考",
+      "date": "2023-10-24",
+      "category": "前端开发",
+      "type": "frontend",
+      "summary": "在复杂的企业级应用中，如何利用 Module Federation 实现真正的解耦？本文探讨了状态共享与沙箱隔离的最佳实践。",
+      "cover": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "content": "<h2>微前端的现状</h2><p>此处为详细内容...</p>"
+    },
+    {
+      "id": 2,
+      "title": "Kubernetes 自动化运维实战笔记",
+      "date": "2023-10-15",
+      "category": "运维部署",
+      "type": "devops",
+      "summary": "从零搭建高可用的K8s集群，并实现基于GitOps的持续交付流程。包含遇到的坑与解决方案。",
+      "cover": "https://images.unsplash.com/photo-1667372393119-c81c0e8f1a8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "content": "<p>K8s已成为云原生时代的操作系统...</p>"
+    },
+    {
+      "id": 3,
+      "title": "设计系统中的色彩语义学",
+      "date": "2023-09-28",
+      "category": "UI/UX设计",
+      "type": "design",
+      "summary": "颜色不仅仅是装饰。如何建立一套具有语义、可访问性且易于扩展的色彩系统？",
+      "cover": "https://images.unsplash.com/photo-1502691876148-a84978e59af8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "content": "<p>色彩是设计语言中最感性的部分...</p>"
+    },
+    {
+      "id": 4,
+      "title": "Rust vs Go：系统编程的选择",
+      "date": "2023-11-02",
+      "category": "后端技术",
+      "type": "backend",
+      "summary": "在高性能服务端的选型上，Rust的内存安全与Go的高并发模型各有所长。深度对比分析。",
+      "cover": "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "content": "<p>系统级编程语言正在经历复兴...</p>"
+    },
+    {
+      "id": 5,
+      "title": "数字游民生活指南：工具篇",
+      "date": "2023-08-10",
       "category": "随笔",
       "type": "thought",
-      "summary": "这是摘要...",
-      "cover": "图片链接",
-      "content": "<p>这是正文内容</p>"
+      "summary": "高效远程工作的必备硬件与软件清单，以及如何保持工作与生活的边界。",
+      "cover": "https://images.unsplash.com/photo-1593642532744-d377ab507dc8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "content": "<p>自由不代表散漫，自律才是自由的前提...</p>"
     }
   ],
   "agents": [
-     {
-        "id": 1,
-        "name": "示例智能体",
-        "desc": "描述",
-        "tags": ["AI"],
-        "url": "链接"
-     }
+    {
+      "id": 1,
+      "name": "CodeRefactor AI",
+      "desc": "一键优化遗留代码，自动添加注释并转换为现代ES6+语法。",
+      "tags": ["Python", "NLP", "Code"],
+      "url": "https://en.wikipedia.org/wiki/Artificial_intelligence_art"
+    },
+    {
+      "id": 2,
+      "name": "DailyBrief Bot",
+      "desc": "自动聚合HackerNews与Github Trending，生成中文简报。",
+      "tags": ["RAG", "Automation"],
+      "url": "https://en.wikipedia.org/wiki/Generative_artificial_intelligence"
+    },
+    {
+      "id": 3,
+      "name": "Immersive Translator",
+      "desc": "上下文感知的沉浸式翻译助手，支持多语种实时对照。",
+      "tags": ["React", "API"],
+      "url": "https://en.wikipedia.org/wiki/Machine_translation"
+    }
   ],
   "photos": [
-    { "id": 1, "src": "图片链接", "title": "标题" }
+    { "id": 1, "src": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", "title": "晨雾山林" },
+    { "id": 2, "src": "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", "title": "阿尔卑斯倒影" },
+    { "id": 3, "src": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", "title": "海角余晖" },
+    { "id": 4, "src": "https://images.unsplash.com/photo-1519681393798-3828fb4090bb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", "title": "城市霓虹" },
+    { "id": 5, "src": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", "title": "孤旅" },
+    { "id": 6, "src": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", "title": "静谧湖泊" },
+    { "id": 7, "src": "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", "title": "森林光影" },
+    { "id": 8, "src": "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80", "title": "田野" }
   ]
 }
