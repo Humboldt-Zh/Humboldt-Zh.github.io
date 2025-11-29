@@ -2,15 +2,15 @@
   "siteConfig": {
     "name": "LUMOS",
     "title": "开发者 / 创作者 / 思考者",
-    "bio": "在代码与像素之间寻找平衡。热爱构建现代Web应用，同时也痴迷于捕捉光影的瞬间。",
+    "bio": "我叫张宏博，现在是一名AI产品经理，喜欢徒步，喜欢摄影。",
     "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
   },
   "blogPosts": [
     {
       "id": 1,
-      "title": "构建下一代微前端架构的思考",
+      "title": "AI产品经理",
       "date": "2023-10-24",
-      "category": "前端开发",
+      "category": "AI",
       "type": "frontend",
       "summary": "在复杂的企业级应用中，如何利用 Module Federation 实现真正的解耦？本文探讨了状态共享与沙箱隔离的最佳实践。",
       "cover": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
